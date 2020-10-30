@@ -400,12 +400,11 @@ class UserApiController extends Controller
                     }else{
                         if($duoi_file!='mp4'){
                             $ffmpeg = FFMpeg::create([
-                                'ffmpeg.binaries'  => 'C:/FFmpeg/bin/ffmpeg.exe',
-                                'ffprobe.binaries' => 'C:/FFmpeg/bin/ffprobe.exe'
+                                'ffmpeg.binaries'  => 'FFmpeg/bin/ffmpeg.exe',
+                                'ffprobe.binaries' => 'FFmpeg/bin/ffprobe.exe'
                             ]);
                             $ffmpeg->open($file)
                             ->save(new \FFMpeg\Format\Video\X264('aac'),'file_area/'.$new_name_mp4);
-
                             $dataname[] = $new_name_mp4;  
                             $url_file[] = url('file_area/'.$new_name_mp4);
                         }else{

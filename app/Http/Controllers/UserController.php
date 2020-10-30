@@ -52,7 +52,6 @@ class UserController extends Controller
         Session::put('message',$arr_err->message);
         Session::put('error',$arr_err->error);
         return redirect()->back();
-      
     }
     public function login(Request $req){
         return view('admin.pages.login');
