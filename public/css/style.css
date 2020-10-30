@@ -1,0 +1,20 @@
+.step{
+    display: none;
+}
+.step.active{
+    display: block;
+}
+.hr.active{
+    display: block;
+}
+.hr{
+    display: none;
+}
+.right-retals{
+    position: absolute;
+    right: -160px;
+    top: 15px;
+}
+.filter-w{
+    position: relative;
+}
