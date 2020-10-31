@@ -59,21 +59,4 @@ Route::get('/get-bank-api',[UserApiController::class,'get_bank_api']);
 Route::get('/get-list-project-api',[UserApiController::class,'get_list_project_api']);
 Route::get('/create-project-tracker-api/{id}',[UserApiController::class,'create_project_tracker_api']);
 Route::post('/update-project-detail',[UserApiController::class,'update_project_detail']);
-//////////////////////////
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('login', [UserController::class, 'login'])->name('loginApi');
-Route::post('register', [UserController::class, 'register']);
-Route::group(['middleware' => 'auth:api'], function(){
-Route::post('details', [UserController::class, 'details'])->name('details');
-});
-//reset password
-Route::post('reset', [ForgotPasswordController::class, 'getForgotPassword'])->name('resetPassword');
-Route::post('add/token', [ForgotPasswordController::class, 'store'])->name('addToken');
-
-//site inspection
-Route::get('getListUser', [SalerController::class, 'getListUser'])->name('getListUser');
-Route::put('editUser/{id}', [SalerController::class, 'updateUser'])->name('updateUser');
-Route::get('getDetailUser/{id}', [SalerController::class, 'getDetailUser']);
+Route::get('/getDetailUser/{id}', [UserApiController::class, 'getDetailUser']);

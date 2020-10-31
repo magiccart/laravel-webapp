@@ -258,9 +258,7 @@ input#upload-canvar {
                             </div>
                             <div class="filter-body">
                                 <div>Panel Array (Installation)<button class="btn btn-primary" data-backdrop="static" data-keyboard="false" data-target="#drawSlideModal" data-toggle="modal" >DRAW</button></div>
-                            {{-- <img src="{{asset('img/')}}" alt=""> --}}
-                            <img src="http://localhost/webapp_test/public/img/{{$item->panel_image}}" id="image_show" alt="">
-                            {{-- // {{asset("/update-inspection-detail")}} --}}
+                            <img src="{{asset('img/'.$item->panel_image)}}" id="image_show" alt="">
                                 <div aria-hidden="true" class="onboarding-modal modal fade animated" id="drawSlideModal" role="dialog" tabindex="-1">
                                     <div class="modal-dialog modal-lg modal-centered" role="document">
                                       <div class="modal-content text-center">
@@ -430,9 +428,9 @@ input#upload-canvar {
                                             $img_array_ok =  ['png','jpeg','jpg'];
                                         ?>
                                         @if(in_array($file_extension,$img_array_ok))
-                                        <a href="http://localhost/webapp_test/public/upload/{{$item->document_1}}" class="document_1_href" target='_blank'><img class='img-show' src='http://localhost/webapp_test/public/upload/{{$item->document_1}}' alt=''></a>
+                                        <a href="{{asset('upload/'.$item->document_1)}}" class="document_1_href" target='_blank'><img class='img-show' src="{{asset('upload/'.$item->document_1)}}" alt=''></a>
                                         @else
-                                        <a href="http://localhost/webapp_test/public/upload/{{$item->document_1}}" class="document_1_href" target="_blank">View Document</a>
+                                        <a href="{{asset('upload/'.$item->document_1)}}" class="document_1_href" target="_blank">View Document</a>
                                         @endif
                                     </div>
                                     @endif
@@ -459,9 +457,9 @@ input#upload-canvar {
                                         $img_array_ok =  ['png','jpeg','jpg'];
                                     ?>
                                     @if(in_array($file_extension,$img_array_ok))
-                                    <a href="http://localhost/webapp_test/public/upload/{{$item->document_2}}" class="document_2_href" target='_blank'><img class='img-show' src='http://localhost/webapp_test/public/upload/{{$item->document_2}}' alt=''></a>
+                                    <a href="{{asset('upload/'.$item->document_2)}}" class="document_2_href" target='_blank'><img class='img-show' src="{{asset('upload/'.$item->document_2)}}" alt=''></a>
                                     @else
-                                    <a href="http://localhost/webapp_test/public/upload/{{$item->document_2}}" class="document_2_href" target="_blank">View Document</a>
+                                    <a href="{{asset('upload/'.$item->document_2)}}" class="document_2_href" target="_blank">View Document</a>
                                     @endif
                                     </div>
                                     @endif
@@ -490,9 +488,9 @@ input#upload-canvar {
                                         $img_array_ok =  ['png','jpeg','jpg'];
                                     ?>
                                     @if(in_array($file_extension,$img_array_ok))
-                                    <a href="http://localhost/webapp_test/public/upload/{{$item->document_3}}" class="document_3_href" target='_blank'><img class='img-show' src='http://localhost/webapp_test/public/upload/{{$item->document_3}}' alt=''></a>
+                                    <a href="{{asset('upload/'.$item->document_3)}}" class="document_3_href" target='_blank'><img class='img-show' src="{{asset('upload/'.$item->document_3)}}" alt=''></a>
                                     @else
-                                    <a href="http://localhost/webapp_test/public/upload/{{$item->document_3}}" class="document_3_href" target="_blank">View Document</a>
+                                    <a href="{{asset('upload/'.$item->document_3)}}" class="document_3_href" target="_blank">View Document</a>
                                     @endif
                                     </div>
                                     @endif
@@ -528,7 +526,7 @@ input#upload-canvar {
                                         @endphp
                                         <div class="show-list-img">
                                             @foreach ($arr_listname_panel as $item_img)
-                                                <a target="_blank" href="http://localhost/webapp_test/public/file_area/{{$item_img}}"><img class='img-show' src='http://localhost/webapp_test/public/file_area/{{$item_img}}' alt=''></a>
+                                                <a target="_blank" href="{{asset('file_area/'.$item_img)}}"><img class='img-show' src='{{asset("file_area/".$item_img)}}' alt=''></a>
                                             @endforeach
                                         </div>
                                     @endif
@@ -551,7 +549,7 @@ input#upload-canvar {
                                         @endphp
                                         <div class="show-list-img">
                                             @foreach ($arr_listname_inver as $item_img)
-                                                <img class='img-show' src='http://localhost/webapp_test/public/file_area/{{$item_img}}' alt=''>
+                                                <img class='img-show' src='{{asset('file_area/'.$item_img)}}' alt=''>
                                             @endforeach
                                         </div>
                                     @endif
@@ -576,9 +574,9 @@ input#upload-canvar {
                                             @foreach ($arr_listname_video as $item_video)
                                             
                                             <video width='320' height='240' class='video-show' controls>
-                                                <source src='http://localhost/webapp_test/public/file_area/{{$item_video}}' type='video/mp4'>
+                                                <source src="{{asset('file_area/'.$item_video)}}" type='video/mp4'>
                                             </video>
-                                            <a href="http://localhost/webapp_test/public/file_area/{{$item_video}}" class="video-show" target="_blank">open_new_tab</a>
+                                            <a href="{{asset('file_area/'.$item_video)}}" class="video-show" target="_blank">open_new_tab</a>
                                             @endforeach 
                                         </div>
                                     @endif
@@ -674,7 +672,7 @@ input#upload-canvar {
                 },
                 success: function (data) {
                     $('#loading').hide();
-                        $('#image_show').attr('src','http://localhost/webapp_test/public/img/'+data.panel_image);
+                        $('#image_show').attr('src','{{asset("img/'+data.panel_image+'")}}');
                         $('#drawSlideModal').modal('toggle');
                     }
             })
@@ -816,7 +814,7 @@ input#upload-canvar {
                             if($('.ss1-img')[0]){
 
                             }else{
-                            $('.ss1').append("<img src='http://localhost/webapp_test/public/img/1200px-Check_green_icon.svg.png' class='ss1-img' style='width: 14px' alt=''>")
+                            $('.ss1').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss1-img' style='width: 14px' alt=''>")
                             }
                         }else{
                             if($('.ss1-img')[0]){
@@ -827,7 +825,7 @@ input#upload-canvar {
                             if($('.ss2-img')[0]){
                                 
                             }else{
-                            $('.ss2').append("<img src='http://localhost/webapp_test/public/img/1200px-Check_green_icon.svg.png' class='ss2-img' style='width: 14px' alt=''>")
+                            $('.ss2').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss2-img' style='width: 14px' alt=''>")
                             }
                         }else{
                             if($('.ss1-img')[0]){
@@ -838,7 +836,7 @@ input#upload-canvar {
                             if($('.ss3-img')[0]){
                                 
                             }else{
-                            $('.ss3').append("<img src='http://localhost/webapp_test/public/img/1200px-Check_green_icon.svg.png' class='ss3-img' style='width: 14px' alt=''>")
+                            $('.ss3').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss3-img' style='width: 14px' alt=''>")
                             }
                         }else{
                             if($('.ss3-img')[0]){
@@ -913,7 +911,7 @@ input#upload-canvar {
                         if($('.ss4-img')[0]){
 
                         }else{
-                        $('.ss4').append("<img src='http://localhost/webapp_test/public/img/1200px-Check_green_icon.svg.png' class='ss4-img' style='width: 14px' alt=''>")
+                        $('.ss4').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss4-img' style='width: 14px' alt=''>")
                         }
                     }
                 if(data.error == true){
@@ -1042,7 +1040,7 @@ input#upload-canvar {
                         if($('.ss5-img')[0]){
 
                         }else{
-                        $('.ss5').append("<img src='http://localhost/webapp_test/public/img/1200px-Check_green_icon.svg.png' class='ss5-img' style='width: 14px' alt=''>")
+                        $('.ss5').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss5-img' style='width: 14px' alt=''>")
                         }
                     }
                     if(data.save==true && data.style=='img'){

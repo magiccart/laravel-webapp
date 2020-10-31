@@ -279,4 +279,17 @@ class UserController extends Controller
         $project = json_decode($response);
         return view('admin.pages.detail-project')->with('project',$project);
     }
+    public function get_list_contact(){
+        $response = Curl::to(url('api/get-data-contact'))->get();
+        $list_contact_users = json_decode($response);;
+        foreach($list_contact_users as $user){
+            if ($user->status==2){
+                $listUser['isconfirmed'][] = $user;
+            }
+            else{
+                $listUser['notconfirmed'][] = $user;
+            }
+        }
+        return view('admin.pages.get-contact',['data'=>$listUser]);
+    }
 }

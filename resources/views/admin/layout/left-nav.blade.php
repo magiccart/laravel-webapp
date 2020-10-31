@@ -49,7 +49,7 @@
             </div>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset('admin/sale/get-contact')}}">
+            <a href="{{asset('/get-list-contact')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>

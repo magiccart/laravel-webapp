@@ -312,6 +312,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data) {
+                        console.log(data);
                         $("#name").html(data[0].contact_name);
                         $("#address1").val(data[0].contact_adr_1);
                         $("#address2").val(data[0].contact_adr_2);

@@ -17,7 +17,7 @@
               <div class="col-sm-9 col-xs-6">
                 <input type="text" class="id-potentials" value="{{$item->id}}" style="display: none">
               <h5>Potentials ID - {{$item->id}}</h5>
-              <div class="link-view"><a href="http://localhost/webapp_test/public/get-inspection-detail/{{$item->site_inspection_id}}">Survey ID {{$item->site_inspection_id}}</a></div>
+              <div class="link-view"><a href="{{asset('get-inspection-detail/'.$item->site_inspection_id)}}">Survey ID {{$item->site_inspection_id}}</a></div>
               </div>
               <div class="col-sm-3 col-xs-6">
                 <div class="system-size">
@@ -27,8 +27,8 @@
               </div>
             </div>
             @endforeach
-            <form id="formValidate" method="POST" action="https://plugincheckout.com/webapp/sale/update-potential" novalidate="true">
-              <input type="hidden" name="_token" value="xfhz7QtgmCc6fYzHF1bNMCo6zPDSTzFdbBTR8fOn">
+            <form id="formValidate" method="POST" action="" novalidate="true">
+              @csrf
               <input type="hidden" name="id" value="1">
               <div class="form-group potential-status">
                 <label for="">Potential Status</label>

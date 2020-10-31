@@ -19,7 +19,7 @@ use Carbon\Carbon;
 class UserApiController extends Controller
 {
     public function url($urlcall){
-        return 'http://localhost/webapp_test/public/'.$urlcall;
+        return 'http://localhost/laravel-webapp/public/'.$urlcall;
     }
     public function register_api(Request $req){
         $validator = Validator::make($req->all(), [
@@ -375,6 +375,10 @@ class UserApiController extends Controller
             'ss4'=>$get_inspec->session_4,
             'super_btn_hide'=>$super_btn_hide
         ]);
+    }
+    public function getDetailUser(Request $req){
+        $user =  DB::table('contact')->where('id',$req->id)->get();
+        return $user;
     }
     public function save_area(Request $req){
         if($req->hasfile('file'))

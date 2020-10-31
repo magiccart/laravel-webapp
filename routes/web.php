@@ -44,32 +44,7 @@ Route::get('/show-page-update-user-sale/{id}',[UserController::class,'show_page_
 Route::post('/update-user-sale',[UserController::class,'update_user_sale']);
 Route::post('/update-user-contact',[UserController::class,'update_user_contact']);
 Route::get('/show-page-dashboard',[UserController::class,'show_page_dashboard']);
+Route::get('/show-page-dashboard-sale',[UserController::class,'show_page_dashboard_sale']);
 Route::get('/show-page-list-project',[UserController::class,'show_page_list_project']);
 Route::get('/show-page-detail-project/{id}',[UserController::class,'show_page_detail_project']);
-
-///
-//Route::get('test', [ForgotPasswordController::class, 'test']);
-Route::post('admin/newPass', [ForgotPasswordController::class, 'newPass'])->name('newPass');
-Route::get('admin/newPass', [ForgotPasswordController::class, 'newPassIndex']);
-Route::get('resetPassword/{token}', [ForgotPasswordController::class, 'resetPassword']);
-Route::post('forgotPassword', [ForgotPasswordController::class, 'getForgotPassword'])->name('forgotPassword');
-Route::get('forgotPassword', [ForgotPasswordController::class, 'getForgotPasswordIndex']);
-Route::get('forgot', [ForgotPasswordController::class, 'index'])->name('forgot');
-Route::get('admin/login', [AdminPageController::class, 'login']);
-Route::get('admin/register', [AdminPageController::class, 'register']);
-Route::post('admin/login', [AdminPageController::class, 'postLogin'])->name('postLogin');
-//mail
-Route::get('mail/send', [MailController::class, 'send'])->name('sendEmail');
-//user
-    Route::get('user/detail/{id}', [Saler::class, 'getDetailUser']);
-    Route::post('user/edit/{id}', [Saler::class, 'getEditUser'])->name('editUser');
-//Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
-    Route::get('admin/index', [AdminPageController::class, 'index']);
-    Route::get('/admin/logout', [AdminPageController::class, 'logout']);
-    Route::get('admin/contact', [AdminPageController::class, 'contact']);
-
-//    Route::group(['prefix' => 'sale'], function () {
-        Route::get('test', [Saler::class, 'getListUser']);
-        Route::get('admin/sale/list', [Saler::class, 'index'])->name('saler');
-        Route::get('admin/sale/get-contact', [Saler::class, 'getContact']);
-        Route::get('admin/sale/dasboard', [Saler::class, 'getDasboard']);
+Route::get('/get-list-contact',[UserController::class,'get_list_contact']);
