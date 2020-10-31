@@ -775,10 +775,8 @@ class UserApiController extends Controller
     }
     public function create_project_tracker_api(Request $req){
         $project = DB::table('projects')->where('id',$req->id)->first();
-        $project_tracker_check = DB::table('project_tracker')->where('id_user',$project->id_user)->first();
-        if($project_tracker_check){
+        if($project){
             $project_super = DB::table('projects')
-                ->join('project_tracker','project_tracker.id_user','=','projects.id_user')
                 ->join('discom_application','discom_application.id_project','=','projects.id')
                 ->join('discom_commissioning_application','discom_commissioning_application.id_project','=','projects.id')
                 ->join('finance_application','finance_application.id_project','=','projects.id')
@@ -789,7 +787,6 @@ class UserApiController extends Controller
                 ->select('*')->where('projects.id',$req->id)->first();
                 return response()->json($project_super);
         }else{
-            DB::insert('insert into project_tracker(id_user) values(?)',[$project->id_user]);
             DB::insert('insert into discom_application(id_project) values(?)',[$req->id]);
             DB::insert('insert into discom_commissioning_application(id_project) values(?)',[$req->id]);
             DB::insert('insert into finance_application(id_project) values(?)',[$req->id]);
@@ -799,7 +796,6 @@ class UserApiController extends Controller
             DB::insert('insert into installation_application(id_project) values(?)',[$req->id]);
 
         $project_super = DB::table('projects')
-            ->join('project_tracker','project_tracker.id_user','=','projects.id_user')
             ->join('discom_application','discom_application.id_project','=','projects.id')
             ->join('discom_commissioning_application','discom_commissioning_application.id_project','=','projects.id')
             ->join('finance_application','finance_application.id_project','=','projects.id')
@@ -812,32 +808,86 @@ class UserApiController extends Controller
         }
     }
     public function update_project_detail(Request $req){
-        if(isset($req->section)){
-            $cc=DB::table($req->section)->where('id_project',$req->id_project)->update([
+        $project = DB::table('projects')->where('id',$req->id_project)->first();
+        if(isset($req->section)){           
+            DB::table($req->section)->where('id_project',$req->id_project)->update([
                 $req->name => $req->val
             ]);
             $section = DB::table($req->section)->where('id_project',$req->id_project)->first();
+            $condition = false;
+            $ss_check = false;
             switch ($req->section) {
                 case 'discom_application':
-                    if($section->d_application_submitted==1 && $section->d_status=="Approved"){$condition = true;}
+                    if($section->d_application_submitted==1 && $section->d_status=="Approved"){
+                        $condition = true;
+                        if($project->finance_application==1){
+                            $ss_check=true;
+                        }
+                    }
                 break;
                 case 'finance_application':
-                    if($section->f_application_submitted==1 && $section->f_status=="Approved"){$condition = true;}
+                    if($section->f_application_submitted==1 && $section->f_status=="Approved"){
+                        $condition = true;
+                        if($project->discom_application==1){
+                            $ss_check=true;
+                        }
+                    }
+                break;
+                case 'components_application':
+                    if( $section->panels_ordered==1 && 
+                        $section->inverter_ordered==1 && 
+                        $section->frame_ordered==1 && 
+                        $section->wire_ordered==1 && 
+                        $section->accessories_ordered==1 && 
+                        $section->monitoring_system_ordered==1 && 
+                        $section->panels_received==1 && 
+                        $section->inverter_received==1 && 
+                        $section->frame_received==1 && 
+                        $section->wire_received==1 && 
+                        $section->accessories_received==1 && 
+                        $section->monitoring_system_received==1
+                    ){
+                        $condition = true;
+                        $ss_check=true;
+                    }
+                break;
+                case 'installation_application':
+                    if($section->installation_completed==1 && isset($section->i_date_scheduled)){
+                        $condition = true;
+                        $ss_check=true;
+                    }
+                break;
+                case 'compliance_application':
+                    if($section->compliance_completed==1 && isset($section->c_date_scheduled)){
+                        $condition = true;
+                        $ss_check=true;
+                    }
+                break;
+                case 'discom_commissioning_application':
+                    if($section->application_completed==1 && isset($section->d_date_scheduled))
+                    {
+                        $condition = true;
+                        $ss_check=true;
+                    }
+                break;
+                case 'commission_application':
+                    if($section->commissioned==1){$condition = true;}
                 break;
             }
             if($condition){
                 DB::table('projects')->where('id',$req->id_project)->update([$req->section=>1]);
                 $project = DB::table('projects')->where('id',$req->id_project)->first();
-                DB::table('project_tracker')->where('id_user',$project->id_user)->update([$req->section=>1]);
                 return response()->json([
-                    $req->section=>1
+                    'table'=>$req->section,
+                    'check'=>true,
+                    'ss_check'=>$ss_check
                 ]);
             }else{
                 DB::table('projects')->where('id',$req->id_project)->update([$req->section=>0]);
                 $project = DB::table('projects')->where('id',$req->id_project)->first();
-                DB::table('project_tracker')->where('id_user',$project->id_user)->update([$req->section=>0]);
                 return response()->json([
-                    $req->section=>0
+                    'table'=>$req->section,
+                    'check'=>false
                 ]);
             }
         }
