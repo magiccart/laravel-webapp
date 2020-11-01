@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\welcomMail;
@@ -12,6 +14,17 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 class UserController extends Controller
 {
+    public function test(){
+        $user = new User();
+        $user->name = 'trung';
+        $user->email ='hoangtrung@gmail.com';
+        $user->password = bcrypt('111');
+        $user->save();
+    }
+    public function logout(){
+        Auth::logout();
+        return redirect('/admin/login');
+    }
     public function register(){
         $response = Curl::to(url('api/get-states-api'))->get();
         $data = json_decode($response);
@@ -54,8 +67,70 @@ class UserController extends Controller
         return redirect()->back();
     }
     public function login(Request $req){
-        return view('admin.pages.login');
+        if (Auth::check()){
+            return redirect(asset('admin/show-page-dashboard'));
+        }
+        else{
+            return view('admin.pages.login');
+        }
     }
+    public function postLogin(Request $request){
+        $this->validate($request,
+            [
+                'email'=> 'required|min:8|max:25',
+                'password'=> 'required|min:1|max:20',
+            ],
+            [
+                'password.required' => 'ban chua nhap password',
+                'password.min' =>' password phai lon hon 3 ky tu',
+                'password.max' =>' password phai nho hon 20 ky tu',
+                'email.required' => 'ban chua nhap email',
+                'email.min' =>' email phai lon hon 3 ky tu',
+                'email.max' =>' email phai nho hon 20 ky tu',
+            ]
+        );
+        $email = $request->email;
+        $password = $request->password;
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+            $response = Curl::to(route('loginApi'))
+                ->withData(['email'=>$email, 'password'=>$password])->post();
+            $response = json_decode($response);
+            if (isset($response->success->token)){
+                $postRequest = null;
+                $token = $response->success->token;
+                $cURLConnection = curl_init(route('details'));
+                curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($cURLConnection, CURLOPT_POSTFIELDS, $postRequest);
+                curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
+                    'Authorization: Bearer '. $token,
+                ));
+                $role = curl_exec($cURLConnection);
+                curl_close($cURLConnection);
+                switch ($role){
+                    case 1:
+                        return redirect('/admin/index');
+                        break;
+                    case 2:
+                        return redirect(route('customer'));
+                        break;
+                    case 3:
+                        return redirect(route('installer'));
+                        break;
+                    case 4:
+                        return redirect('admin/show-page-dashboard');
+                        break;
+                    default:
+                        return redirect('admin/login');
+                }
+            }
+        }
+        else{
+            return redirect('admin/login')->with('message',"email or password is not correct");
+        }
+
+
+    }
+
     public function site_inspection_detail(Request $req){
         return view('admin.pages.index');
     }
@@ -250,13 +325,24 @@ class UserController extends Controller
         return view('admin.pages.dashboard-sale');
     }
     public function update_user_contact(Request $req){
-        $response = Curl::to(url('api/update-user-contact-api'))->withData([
-            'contact_adr_1'=>$req->address1,
-            'contact_adr_2'=>$req->address2,
-            'contact_visit'=>$req->scheduleDate,
-            'id'=>$req->idcontact
-        ])->post();
-        $data = json_decode($response);
+        $user = Curl::to(url('api/getDetailUser/'.$req->idcontact))->get();
+        $user = json_decode($user);
+        $contact_visit = $user[0]->contact_visit;
+        $scheduleDate = $req->scheduleDate;
+
+        if ($scheduleDate ==$contact_visit){
+            return response()->json(['data'=>'error']);
+        }
+        else{
+            $response = Curl::to(url('api/update-user-contact-api'))->withData([
+                'contact_adr_1'=>$req->address1,
+                'contact_adr_2'=>$req->address2,
+                'contact_visit'=>$req->scheduleDate,
+                'id'=>$req->idcontact
+            ])->post();
+            $data = json_decode($response);
+            MailController::send($req->scheduleDate);
+        }
         if($data->status == 1){
             Session::put('status',$data->status);
             Session::put('message',$data->message);

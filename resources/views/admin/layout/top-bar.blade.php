@@ -229,7 +229,7 @@
                             <a href="#"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
                         </li>
                         <li>
-                            <a href="#"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                            <a href="{{asset('admin/logout')}}"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
                         </li>
                     </ul>
                 </div>

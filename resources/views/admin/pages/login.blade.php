@@ -10,26 +10,39 @@
         <h4 class="auth-header">
             Login Form
         </h4>
-        <?php
-            $message = Session::get('message');
-            $error = Session::get('error');
-            if($error == false && $message) {
-            echo '<p class="text-success text-center">'.$message.'</p>';
-            Session::put('message',null);
-            }
-        ?>
-        <form action="">
+        @if(count($errors) >0)
+            <div class="alert alert-danger">
+                @foreach($errors->all() as $err)
+                    {{$err}}<br>
+                @endforeach
+            </div>
+        @endif
+        @if(session('message'))
+            <div class="alert alert-danger">
+                {{session('message')}}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
+        <form action="{{route('postLogin')}}" method="post">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="form-group">
-                <label for="">Username</label><input class="form-control" placeholder="Enter your username" type="text">
+                <label for="">Email</label>
+                <input class="form-control" placeholder="Enter your email" type="email" name="email">
                 <div class="pre-icon os-icon os-icon-user-male-circle"></div>
             </div>
             <div class="form-group">
-                <label for="">Password</label><input class="form-control" placeholder="Enter your password" type="password">
+                <label for="">Password</label>
+                <input class="form-control" placeholder="Enter your password" type="password" name="password">
                 <div class="pre-icon os-icon os-icon-fingerprint"></div>
             </div>
             <div class="buttons-w">
-                <button class="btn btn-primary">Log in</button>
-                <a href="./register"> <div  class="btn btn-primary">Contact</div></a>
+                <button type="submit" class="btn btn-primary">Log in</button>
+                <a href="contact"> <button  class="btn btn-primary">Contact</button></a>
+                <a href="{{route('forgot')}}">Forgot Password</a>
             </div>
         </form>
     </div>

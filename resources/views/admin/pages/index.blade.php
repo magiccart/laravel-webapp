@@ -45,7 +45,7 @@ div#system_size,div#tpc,div#remaining,div#emi {
 }
 h6.filter-header {
     font-weight: 700;
-}   
+}
 /* .filter-header::after {
     content:'\2713';
     display:none;
@@ -162,7 +162,7 @@ input#upload-canvar {
                     <form action="" id="form1" enctype="multipart/form-data">
                     <div class="filter-side">
                         @foreach ($data as $item)
-                        
+
                             @if(($item->session_1==1)&&($item->session_2==1)&&($item->session_3==1)&&($item->session_4==1)&&($item->session_5==1))
                                 <style>
                                     .btn-super-hide{
@@ -336,7 +336,7 @@ input#upload-canvar {
                                 <i class="icon-arrow-down"></i>
                             </div>
                             <div class="filter-body">
-                                <div class="far-number-kw">Total Project Cost (includes 2 years of AMC) <br><span>Rs.</span><div class="number-kw" id="tpc"> 
+                                <div class="far-number-kw">Total Project Cost (includes 2 years of AMC) <br><span>Rs.</span><div class="number-kw" id="tpc">
                                     {{isset($item->tpc)?$item->tpc:'0'}}
                                 </div></div>
                                 <div class="">
@@ -572,12 +572,12 @@ input#upload-canvar {
                                         @endphp
                                         <div class="show-list-video">
                                             @foreach ($arr_listname_video as $item_video)
-                                            
+
                                             <video width='320' height='240' class='video-show' controls>
                                                 <source src="{{asset('file_area/'.$item_video)}}" type='video/mp4'>
                                             </video>
                                             <a href="{{asset('file_area/'.$item_video)}}" class="video-show" target="_blank">open_new_tab</a>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                     @endif
                                 </div>
@@ -599,7 +599,7 @@ input#upload-canvar {
     </div>
 </div>
 </div>
-@section('script') 
+@section('script')
 <script>
     $(document).ready(function(){
         //geet location current
@@ -612,7 +612,7 @@ input#upload-canvar {
             {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition);
-                } else { 
+                } else {
                     alert("Geolocation is not supported by this browser.");
                 }
             }
@@ -731,10 +731,10 @@ input#upload-canvar {
             return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
             }
         //upload base 64->canvas
-        var base64 = getBase64Image(document.getElementById("image_show"));
-        canvas_sketchpad = document.getElementById('sketchpad');
+        // var base64 = getBase64Image(document.getElementById("image_show"));
+        // canvas_sketchpad = document.getElementById('sketchpad');
         // canvas_sketchpad.toDataURL()=base64;
-        // pain
+        // // pain
         var sketchpad = new Sketchpad({
         element: '#sketchpad',
         width: 500,
@@ -749,7 +749,7 @@ input#upload-canvar {
         $('.clear').on('click',function(){
             sketchpad.clear();
         })
-        // 
+        //
         sketchpad.color=$('#favcolor').val();
         sketchpad.penSize=$('#size-draw-id').val();
         $('#value-color').val($('#favcolor').val());
@@ -823,7 +823,7 @@ input#upload-canvar {
                         }
                         if(data[0].ss2==1){
                             if($('.ss2-img')[0]){
-                                
+
                             }else{
                             $('.ss2').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss2-img' style='width: 14px' alt=''>")
                             }
@@ -834,7 +834,7 @@ input#upload-canvar {
                         }
                         if(data[0].ss3==1){
                             if($('.ss3-img')[0]){
-                                
+
                             }else{
                             $('.ss3').append("<img src='{{asset('img/1200px-Check_green_icon.svg.png')}}' class='ss3-img' style='width: 14px' alt=''>")
                             }
@@ -849,15 +849,15 @@ input#upload-canvar {
                         }
                         if(data[0].remaining){
                             remaining = Math.round((data[0].remaining) * 100) / 100
-                            $('#remaining').text(remaining); 
+                            $('#remaining').text(remaining);
                         }
                         if(data[0].emi){
                             emi = Math.round((data[0].emi) * 100) / 100
-                            $('#emi').text(emi); 
+                            $('#emi').text(emi);
                         }
                         if(data[0].tpc){
-                            tpc = Math.round((data[0].tpc) * 100) / 100 
-                            $('#tpc').text(tpc); 
+                            tpc = Math.round((data[0].tpc) * 100) / 100
+                            $('#tpc').text(tpc);
                         }
                     }
                 })
@@ -992,7 +992,7 @@ input#upload-canvar {
                 }
             }
             })
-        }); 
+        });
 
     //Area
         //
