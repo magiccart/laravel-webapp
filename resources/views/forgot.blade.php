@@ -8,7 +8,7 @@
             <a href="index.html"><img alt="" src="img/logo-big.png"></a>
         </div>
         <h4 class="auth-header">
-            Login Form
+            Check Email
         </h4>
         @if(count($errors) >0)
             <div class="alert alert-danger">
@@ -22,30 +22,22 @@
                 {{session('message')}}
             </div>
         @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{session('success')}}
-            </div>
-        @endif
-        <form action="{{route('postLogin')}}" method="post">
+        <form action="{{route('forgotPassword')}}" method="post">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="form-group">
                 <label for="">Email</label>
                 <input class="form-control" placeholder="Enter your email" type="email" name="email">
                 <div class="pre-icon os-icon os-icon-user-male-circle"></div>
             </div>
-            <div class="form-group">
-                <label for="">Password</label>
-                <input class="form-control" placeholder="Enter your password" type="password" name="password">
-                <div class="pre-icon os-icon os-icon-fingerprint"></div>
-            </div>
             <div class="buttons-w">
-                <button type="submit" class="btn btn-primary">Log in</button>
-                <a href="contact"> <button  class="btn btn-primary">Contact</button></a>
-                <a href="{{route('forgot')}}">Forgot Password</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
+
     </div>
 </div>
 </body>
 </html>
+
+
+

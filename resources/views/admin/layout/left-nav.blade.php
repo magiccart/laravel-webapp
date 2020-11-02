@@ -7,14 +7,14 @@
             <span>Menu</span>
         </li>
         <li class="selected has-sub-menu">
-            <a href="{{asset('/show-page-dashboard')}}">
+            <a href="{{asset('admin/show-page-dashboard')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layout"></div>
                 </div>
                 <span>Dashboard</span></a>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset("/show-page-dashboard-sale")}}">
+            <a href="{{asset("admin/show-page-dashboard-sale")}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>
@@ -36,41 +36,41 @@
                 <div class="sub-menu-i">
                     <ul class="sub-menu">
                         <li>
-                            <a href="{{asset('/list-customer')}}">Customer</a>
+                            <a href="{{asset('admin/list-customer')}}">Customer</a>
                         </li>
                         <li>
-                            <a href="{{asset('/list-sale')}}">S&C</a>
+                            <a href="{{asset('admin/list-sale')}}">S&C</a>
                         </li>
                         <li>
-                            <a href="{{asset('/show-page-install')}}">Installs</a>
+                            <a href="{{asset('admin/show-page-install')}}">Installs</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset('/get-list-contact')}}">
+            <a href="{{asset('admin/get-list-contact')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>
                 <span>S&C Visit Confirmation</span></a>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset('/get-potentials-list')}}">
+            <a href="{{asset('admin/get-potentials-list')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>
                 <span>Potentials</span></a>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset('show-page-list-project')}}">
+            <a href="{{asset('admin/show-page-list-project')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>
                 <span>Projects</span></a>
         </li>
         <li class=" has-sub-menu">
-            <a href="{{asset('/show-list-inspec')}}">
+            <a href="{{asset('admin/show-list-inspec')}}">
                 <div class="icon-w">
                     <div class="os-icon os-icon-layers"></div>
                 </div>
