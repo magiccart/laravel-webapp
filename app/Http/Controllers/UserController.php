@@ -14,13 +14,6 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 class UserController extends Controller
 {
-    public function test(){
-        $user = new User();
-        $user->name = 'trung';
-        $user->email ='hoangtrung@gmail.com';
-        $user->password = bcrypt('111');
-        $user->save();
-    }
     public function logout(){
         Auth::logout();
         return redirect('/admin/login');
@@ -54,17 +47,26 @@ class UserController extends Controller
         $arr_err = json_decode($response);
         if (!($arr_err->error)) {
             $send_mail = [
-                'pass' => $arr_err->pass,
                 'link' => $arr_err->link,
             ];
             Mail::to($arr_err->email)->send(new welcomMail($send_mail));
-            Session::put('message',$arr_err->message);
+            Session::put('success',$arr_err->message);
             Session::put('error',$arr_err->error);
             return redirect()->route('login');
         }
         Session::put('message',$arr_err->message);
         Session::put('error',$arr_err->error);
         return redirect()->back();
+    }
+    public function confirm_account(Request $req){
+        $user = DB::table('users')->where('id',$req->id)->where('user_key',md5($req->user_key))->first();
+        if(isset($user)){
+            return view('confirmPass')->with('id',$req->id);
+        }
+    }
+    public function confirm_ok(Request $req){
+        $user = DB::table('users')->where('id',$req->id)->update(['password'=>md5($req->password),'active'=>1]);
+        return redirect('login')->with('success','Account verification is successful');
     }
     public function login(Request $req){
         if (Auth::check()){
@@ -77,21 +79,13 @@ class UserController extends Controller
     public function postLogin(Request $request){
         $this->validate($request,
             [
-                'email'=> 'required|min:8|max:25',
-                'password'=> 'required|min:1|max:20',
-            ],
-            [
-                'password.required' => 'ban chua nhap password',
-                'password.min' =>' password phai lon hon 3 ky tu',
-                'password.max' =>' password phai nho hon 20 ky tu',
-                'email.required' => 'ban chua nhap email',
-                'email.min' =>' email phai lon hon 3 ky tu',
-                'email.max' =>' email phai nho hon 20 ky tu',
+                'email'=> 'required|email',
+                'password'=> 'required',
             ]
         );
         $email = $request->email;
         $password = $request->password;
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+        if (Auth::attempt(['email' =>$email, 'password' => md5($password),'active'=>1])){
             $response = Curl::to(route('loginApi'))
                 ->withData(['email'=>$email, 'password'=>$password])->post();
             $response = json_decode($response);
@@ -120,15 +114,13 @@ class UserController extends Controller
                         return redirect('admin/show-page-dashboard');
                         break;
                     default:
-                        return redirect('admin/login');
+                        return redirect('/login');
                 }
             }
         }
         else{
-            return redirect('admin/login')->with('message',"email or password is not correct");
+            return redirect('/login')->with('message',"Email or password is not correct");
         }
-
-
     }
 
     public function site_inspection_detail(Request $req){
@@ -155,6 +147,7 @@ class UserController extends Controller
     public function show_list_inspec(Request $req){
         $response = Curl::to(url('api/get-list-inspec'))->get();
         $data = json_decode($response);
+        dd($data);
         return view('admin.pages.list-inspec')->with('data',$data);
     }
     public function save_img_canvar(Request $req){
@@ -325,13 +318,10 @@ class UserController extends Controller
         return view('admin.pages.dashboard-sale');
     }
     public function update_user_contact(Request $req){
-        $user = Curl::to(url('api/getDetailUser/'.$req->idcontact))->get();
-        $user = json_decode($user);
-        $contact_visit = $user[0]->contact_visit;
-        $scheduleDate = $req->scheduleDate;
-
-        if ($scheduleDate ==$contact_visit){
-            return response()->json(['data'=>'error']);
+        $contact = Curl::to(url('api/getDetailUser/'.$req->idcontact))->get();
+        $data = json_decode($contact);
+        if ($req->scheduleDate == $data[0]->contact_visit){
+            return redirect()->back();
         }
         else{
             $response = Curl::to(url('api/update-user-contact-api'))->withData([
@@ -341,16 +331,16 @@ class UserController extends Controller
                 'id'=>$req->idcontact
             ])->post();
             $data = json_decode($response);
+            if($data->status == 1){
+                Session::put('status',$data->status);
+                Session::put('message',$data->message);
+                return  redirect()->back();
+            }
             MailController::send($req->scheduleDate);
-        }
-        if($data->status == 1){
             Session::put('status',$data->status);
             Session::put('message',$data->message);
             return  redirect()->back();
         }
-        Session::put('status',$data->status);
-        Session::put('message',$data->message);
-        return  redirect()->back();
     }
     public function show_page_dashboard(Request $req){
         return view('admin.pages.dashboard');
@@ -367,7 +357,7 @@ class UserController extends Controller
     }
     public function get_list_contact(){
         $response = Curl::to(url('api/get-data-contact'))->get();
-        $list_contact_users = json_decode($response);;
+        $list_contact_users = json_decode($response);
         foreach($list_contact_users as $user){
             if ($user->status==2){
                 $listUser['isconfirmed'][] = $user;

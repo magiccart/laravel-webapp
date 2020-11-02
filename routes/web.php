@@ -20,10 +20,12 @@ use App\Http\Controllers\MailController;
 */
 
 
-Route::get('admin/login',[UserController::class,'login'])->name('login');
+Route::get('/login',[UserController::class,'login'])->name('login');
 Route::get('/call-city',[UserController::class,'call_city']);
-Route::get('/register',[UserController::class,'register']);
+Route::get('/register',[UserController::class,'register'])->name('register');
 Route::post('/register',[UserController::class,'post_register']);
+Route::get('/confirm-account/{id}/{user_key}',[UserController::class,'confirm_account']);
+Route::post('/confirm-ok',[UserController::class,'confirm_ok'])->name('confirm_ok');
 Route::get('/forgot', [ForgotPasswordController::class, 'index'])->name('forgot');
 Route::get('/forgotPassword', [ForgotPasswordController::class, 'getForgotPasswordIndex']);
 Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
@@ -32,8 +34,8 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'getForgotPassw
 Route::post('/newPass', [ForgotPasswordController::class, 'newPass'])->name('newPass');
 Route::get('/newPass', [ForgotPasswordController::class, 'newPassIndex']);
 
-Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
-    Route::get('/site-inspection-detail',[UserController::class,'site_inspection_detail'])->middleware('adminLogin');
+// Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
+    Route::get('/site-inspection-detail',[UserController::class,'site_inspection_detail']);
     Route::post('/update-inspection-detail',[UserController::class,'update_inspection_detail']);
     Route::get('/get-inspection-detail/{id}',[UserController::class,'get_inspection_detail']);
     Route::get('/show-list-inspec',[UserController::class,'show_list_inspec']);
@@ -59,4 +61,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
     Route::get('/show-page-detail-project/{id}',[UserController::class,'show_page_detail_project']);
     Route::get('/get-list-contact',[UserController::class,'get_list_contact']);
     Route::get('/logout', [UserController::class, 'logout']);
-});
+// });

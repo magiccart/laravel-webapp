@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "ixudra/curl": "^6.21",
         "laravel/framework": "^8.0",
+        "laravel/passport": "^10.0",
         "laravel/tinker": "^2.0",
         "pbmedia/laravel-ffmpeg": "^7.2",
         "php-ffmpeg/php-ffmpeg": "^0.16.0"

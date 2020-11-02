@@ -61,14 +61,11 @@ class UserApiController extends Controller
         //     ], 200);
         // }
         // dd($req->contact_visit);
-        $date=date('Y-m-d H:m', strtotime($req->contact_visit));
-        $date1 = str_replace(' ','T',$date);
         $user = new User();
         $user->name = $req->name;
         $user->email = $req->email;
         $user->phone = $req->phone;
-        $random_pass = Str::random(10);
-        $user->password = md5($random_pass);
+        $user->user_type = 4;
         $link_checkmail_random = Str::random(20);
         $user->user_key = md5($link_checkmail_random);
         $user->save();
@@ -87,15 +84,19 @@ class UserApiController extends Controller
         $contact->contact_phone = $user->phone;
         $contact->contact_meu = $req->contact_meu;
         $contact->type_meu = $req->type_meu;
-        $contact->contact_visit = $req->contact_visit;
+
+        $date=date('Y-m-d H:m', strtotime($req->contact_visit));
+        $date1 = str_replace(' ','T',$date);
+        
+        $contact->contact_visit = $date1;
         $contact->save();
 
-        $link_confirm = url('confirm-account-api/'.$user->id.'/'.$link_checkmail_random);
+        $link_confirm = url('confirm-account/'.$user->id.'/'.$link_checkmail_random);
         $data = [
             'error' => false,
-            'message'=>'Successfully subscribed to emial to confirm',
+            'message'=>'Successfully subscribed to email to confirm',
             'email'=> $user->email,
-            'pass'=> $random_pass,
+            // 'pass'=> $random_pass,
             'link'=> $link_confirm,
         ];
         return response()->json($data);
@@ -111,34 +112,6 @@ class UserApiController extends Controller
         return response()->json([
             'message'=>'Account activation failed',
         ], 200);
-    }
-    public function login_api(Request $req){
-        $validator = Validator::make($req->all(), [
-            'email'=> 'required|email',
-            'password'=> 'required'
-            ], [
-                'email.required' => 'Email cannot be left blank',
-                'email.email'=>'Incorrect email format',
-                'password.required' => 'Password cannot be left blank',
-            ]);
-        if ($validator->fails()){
-                return response()->json([
-                    'error' => true,
-                    'message' => $validator->errors(),
-                ], 200);
-            }
-        $user = User::where('email',$req->email)->where('password',md5($req->password))->first();
-        if(isset($user)){
-            return response()->json([
-                'error' => true,
-                'message' => 'Login ok',
-            ], 200);
-        }else{
-            return response()->json([
-                'error' => true,
-                'message' => 'Account or login name is incorrect',
-            ], 200);
-        }
     }
     public function forgot_password_api(Request $req){
         $validator = Validator::make($req->all(), [
@@ -745,10 +718,14 @@ class UserApiController extends Controller
         return response()->json($list_user);
     }
     public function update_user_contact_api(Request $req){
+        $contact = DB::table('contact')->where('id',$req->id)->first();
+        $inspec = DB::insert('insert into inspection (id_user,id_contact) values(?,?)',[$contact->id_user,$req->id]);
+        $inspec_id= DB::table('inspection')->where('id_user',$contact->id_user)->where('id_contact',$req->id)->first();
         $list_user =  DB::table('contact')->where('id',$req->id)->update([
             'contact_adr_1'=>$req->contact_adr_1,
             'contact_adr_2'=>$req->contact_adr_2,
             'contact_visit'=>$req->contact_visit,
+            'inspec_id'=>$inspec_id->id,
             'status'=>2
         ]);
         if(!$list_user){

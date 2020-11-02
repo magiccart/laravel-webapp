@@ -67,7 +67,10 @@ span.glyphicon.glyphicon-chevron-down {
     vertical-align: middle;
     font-weight: 900;
 }
-    </style>
+.error {
+    color: var(--red);
+}
+</style>
 <div class="all-wrapper menu-side with-pattern">
     <div class="auth-box-w wider">
         <div class="logo-w">

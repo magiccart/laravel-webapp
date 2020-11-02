@@ -203,6 +203,9 @@
                                                             <a href="javascript:void(0)" data-id="{{$user->id }}"
                                                                id="exampleModal1"
                                                                class="btn btn-primary confirm-btn confirm-data">Confirm</a>
+                                                               <a href="{{asset('get-inspection-detail/'.$user->inspec_id)}}" data-id="{{$user->id }}"
+                                                                id="exampleModal1"
+                                                                class="btn btn-primary" style="margin-left: -1rem;margin-top:.5rem">Inspection</a>
                                                         </td>
                                                 @endforeach
                                             @endif

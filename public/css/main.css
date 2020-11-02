@@ -30080,3 +30080,11 @@ Contents:
     height: 100px;
     z-index: 9999999;
 }
+.mess-err{
+  color:var(--red);
+  text-align:center;
+}
+.mess-success{
+  color:var(--green);
+  text-align:center;
+}
