@@ -672,7 +672,7 @@ input#upload-canvar {
                 },
                 success: function (data) {
                     $('#loading').hide();
-                        $('#image_show').attr('src','{{asset("img/'+data.panel_image+'")}}');
+                        $('#image_show').attr('src','{{asset("img")}}/'+data.panel_image);
                         $('#drawSlideModal').modal('toggle');
                     }
             })
