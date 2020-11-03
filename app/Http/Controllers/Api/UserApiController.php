@@ -61,6 +61,7 @@ class UserApiController extends Controller
         //     ], 200);
         // }
         // dd($req->contact_visit);
+        if($req->contact_city==615&&$req->contact_state==20){
         $user = new User();
         $user->name = $req->name;
         $user->email = $req->email;
@@ -96,9 +97,15 @@ class UserApiController extends Controller
             'error' => false,
             'message'=>'Successfully subscribed to email to confirm',
             'email'=> $user->email,
-            // 'pass'=> $random_pass,
             'link'=> $link_confirm,
         ];
+    }else{
+        $data = [
+            'error' => true,
+            'message'=>'Successfully subscribed to email to confirm',
+            'email'=> $req->email
+        ];
+    }
         return response()->json($data);
     }
     public function confirm_account_api(Request $req){
@@ -752,7 +759,9 @@ class UserApiController extends Controller
     }
     public function create_project_tracker_api(Request $req){
         $project = DB::table('projects')->where('id',$req->id)->first();
-        if($project){
+        $test = DB::table('discom_application')->where('id_project',$project->id)->first();
+        // dd($test);
+        if($test){
             $project_super = DB::table('projects')
                 ->join('discom_application','discom_application.id_project','=','projects.id')
                 ->join('discom_commissioning_application','discom_commissioning_application.id_project','=','projects.id')

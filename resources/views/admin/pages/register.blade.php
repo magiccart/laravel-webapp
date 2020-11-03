@@ -171,9 +171,9 @@ $(document).ready(function(){
 
     $("#valiform").validate({
         
-		onfocusout: false,
-		onkeyup: false,
-		onclick: false,
+        onfocusout: function(element) {$(element).valid()},
+        onkeyup: function(element) {$(element).valid()},
+        onchange: function(element) {$(element).valid()},
 		rules: {
 			"name": {
 				required: true,

@@ -213,7 +213,11 @@ input#upload-canvar {
                                         </div>
                                     </div>
                                 </div>
-                                <div>Capture Location: <button class="btn btn-primary cature" data-target=".bd-example-modal-sm" data-toggle="modal">Cature</button></div>
+                                <div>Capture Location: <button class="btn btn-primary cature" data-target=".bd-example-modal-sm" data-toggle="modal">Cature</button></div><br>
+                                @if(isset($item->lat)&&isset($item->long))
+                                    lat:{{$item->lat}} <br>
+                                    long:{{$item->long}}
+                                @endif
                                 <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade bd-example-modal-sm" role="dialog" tabindex="-1">
                                     <div class="modal-dialog modal-sm">
                                       <div class="modal-content">

@@ -37,7 +37,7 @@
                                 <div class="row">
                                     <div class="col-8">
                                         <p>Project ID - {{$project->id_project}}</p>
-                                        <a href="">Survey-111</a>
+                                        <a href="{{asset('get-inspection-detail/'.$project->site_inspection_id)}}">Survey-{{$project->site_inspection_id}}</a>
                                     </div>
                                     <div class="col-4">
                                         <p>Effective System Size</p>

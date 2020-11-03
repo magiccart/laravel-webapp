@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\welcomMail;
+use App\Mail\sorryMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -50,6 +51,14 @@ class UserController extends Controller
                 'link' => $arr_err->link,
             ];
             Mail::to($arr_err->email)->send(new welcomMail($send_mail));
+            Session::put('success',$arr_err->message);
+            Session::put('error',$arr_err->error);
+            return redirect()->route('login');
+        }else{
+            $send_mail = [
+                'email' => $arr_err->email,
+            ];
+            Mail::to($arr_err->email)->send(new sorryMail($send_mail));
             Session::put('success',$arr_err->message);
             Session::put('error',$arr_err->error);
             return redirect()->route('login');
@@ -147,7 +156,6 @@ class UserController extends Controller
     public function show_list_inspec(Request $req){
         $response = Curl::to(url('api/get-list-inspec'))->get();
         $data = json_decode($response);
-        dd($data);
         return view('admin.pages.list-inspec')->with('data',$data);
     }
     public function save_img_canvar(Request $req){
