@@ -3,71 +3,74 @@
 @include('admin.layout.head')
 <body>
 <style>
-span.input-group-addon {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    border-collapse: separate;
-    box-sizing: border-box;
-    display: table-cell;
-    width: 13%;
-    white-space: nowrap;
-    vertical-align: middle;
-    padding: 12px 12px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    color: #555;
-    text-align: center;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: 0;
-    cursor: pointer;
-}
-span.glyphicon.glyphicon-chevron-down {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    list-style: none;
-    border-spacing: 0;
-    border-collapse: collapse;
-    color: #337ab7;
-    font-size: 14px;
-    text-align: center;
-    white-space: nowrap;
-    user-select: none;
-    box-sizing: border-box;
-    position: relative;
-    top: 1px;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    width: 54px;
-    height: 54px;
-    line-height: 54px;
-    margin: 2px 1.5px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-.glyphicon-chevron-down:before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f107";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-}
-.glyphicon-chevron-up:before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f106";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-}
-    </style>
+    span.input-group-addon {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        border-collapse: separate;
+        box-sizing: border-box;
+        display: table-cell;
+        width: 13%;
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 12px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 0;
+        cursor: pointer;
+    }
+    span.glyphicon.glyphicon-chevron-down {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        list-style: none;
+        border-spacing: 0;
+        border-collapse: collapse;
+        color: #337ab7;
+        font-size: 14px;
+        text-align: center;
+        white-space: nowrap;
+        user-select: none;
+        box-sizing: border-box;
+        position: relative;
+        top: 1px;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        width: 54px;
+        height: 54px;
+        line-height: 54px;
+        margin: 2px 1.5px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    .glyphicon-chevron-down:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f107";
+        display: inline-block;
+        padding-right: 3px;
+        vertical-align: middle;
+        font-weight: 900;
+    }
+    .glyphicon-chevron-up:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f106";
+        display: inline-block;
+        padding-right: 3px;
+        vertical-align: middle;
+        font-weight: 900;
+    }
+    .error {
+        color: var(--red);
+    }
+</style>
 <div class="all-wrapper menu-side with-pattern">
     <div class="auth-box-w wider">
         <div class="logo-w">
@@ -79,13 +82,13 @@ span.glyphicon.glyphicon-chevron-down {
         <form id="valiform" action="./register" method="POST">
             @csrf
             <?php
-                $message = Session::get('message');
-                $error = Session::get('error');   
-                if($error == true && $message) {
+            $message = Session::get('message');
+            $error = Session::get('error');
+            if($error == true && $message) {
                 $mess = json_encode($message);
                 echo $mess;
                 Session::put('message',null);
-            } 
+            }
             ?>
             <div class="form-group">
                 <label for="">Name</label><input class="form-control" placeholder="Enter Name" id="name" name="name" type="text">
@@ -155,83 +158,80 @@ span.glyphicon.glyphicon-chevron-down {
 @include('admin.layout.script')
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
-$(document).ready(function(){
-    $('#datetimepicker1').datetimepicker({
-    defaultDate: new Date(),
-    format: 'DD-MM-YYYY H:mm',
-    sideBySide: true
-    });
+    $(document).ready(function(){
+        $('#datetimepicker1').datetimepicker({
+            defaultDate: new Date(),
+            format: 'DD-MM-YYYY H:mm',
+            sideBySide: true
+        });
+        $.validator.addMethod("regx", function(value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please phone india.");
+        $("#valiform").validate({
 
-    $.validator.addMethod("regx", function(value, element, regexpr) {          
-    return regexpr.test(value);
-    }, "Please phone india.");
-
-    $("#valiform").validate({
-        
-		onfocusout: false,
-		onkeyup: false,
-		onclick: false,
-		rules: {
-			"name": {
-				required: true,
-			},
-			"contact_adr_1": {
-				required: true,
-			},
-			"contact_adr_2": {
-				required: true,
-			},
-			"contact_pincode": {
-				required: true,
-			},
-			"contact_state": {
-				required: true,
-			},
-			"contact_city": {
-				required: true,
-			},
-			"contact_meu": {
-				required: true,
-                digits:true
-			},
-			"phone": {
-				required: true,
-                regx:/^[6-9]\d{9}$/
-			},
-			"email": {
-				required: true,
-                email:true
-			},
-			"contact_visit": {
-				required: true,
-			},
-		}
-	});
-
-$('select[name="contact_state"]').on('change', function(){  
-    var call_city = $(this).val();  
-    $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-    });
-    $.ajax({
-    url: './call-city',
-    method: 'get',
-    data: {
-        'city':call_city,
-    },
-    success: function (data) {
-        $('#contact_city').find('option').remove().end().append('<option value="">City</option>');    
-        for (let i = 0; i < data.length; ++i){
-            $('#contact_city').append($('<option>', {
-            value: data[i].id,
-            text: data[i].city
-        }));
-        }
-    }
+            onfocusout: function(element) {$(element).valid()},
+            onkeyup: function(element) {$(element).valid()},
+            onchange: function(element) {$(element).valid()},
+            rules: {
+                "name": {
+                    required: true,
+                },
+                "contact_adr_1": {
+                    required: true,
+                },
+                "contact_adr_2": {
+                    required: true,
+                },
+                "contact_pincode": {
+                    required: true,
+                },
+                "contact_state": {
+                    required: true,
+                },
+                "contact_city": {
+                    required: true,
+                },
+                "contact_meu": {
+                    required: true,
+                    digits:true
+                },
+                "phone": {
+                    required: true,
+                    regx:/^[6-9]\d{9}$/
+                },
+                "email": {
+                    required: true,
+                    email:true
+                },
+                "contact_visit": {
+                    required: true,
+                },
+            }
+        });
+        $('select[name="contact_state"]').on('change', function(){
+            var call_city = $(this).val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: './call-city',
+                method: 'get',
+                data: {
+                    'city':call_city,
+                },
+                success: function (data) {
+                    $('#contact_city').find('option').remove().end().append('<option value="">City</option>');
+                    for (let i = 0; i < data.length; ++i){
+                        $('#contact_city').append($('<option>', {
+                            value: data[i].id,
+                            text: data[i].city
+                        }));
+                    }
+                }
+            })
+        });
     })
-});
-})
 </script>
 </html>

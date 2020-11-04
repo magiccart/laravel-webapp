@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -185,7 +186,7 @@ class UserController extends Controller
     }
     public function detail_potentials(Request $req){
         $response = Curl::to(url('api/get-detail-potentials-api/'.$req->id))->get();
-        $data = json_decode($response); 
+        $data = json_decode($response);
         return view('admin.pages.detail-potential')->with('data',$data);
     }
     public function show_page_install(){
@@ -322,7 +323,9 @@ class UserController extends Controller
         return view('admin.pages.add-sale');
     }
     public function show_page_dashboard_sale(Request $req){
-        return view('admin.pages.dashboard-sale');
+        $tobeConfirm = \Illuminate\Support\Facades\DB::table('contact')->where('status','=',1)->sum('status');
+        $confirm = \Illuminate\Support\Facades\DB::table('contact')->where('status','=',2)->sum('status');
+        return view('admin.pages.dashboard-sale',['tobeConfirm'=>$tobeConfirm,'confirm'=>$confirm]);
     }
     public function update_user_contact(Request $req){
         $user = Curl::to(url('api/getDetailUser/'.$req->idcontact))->get();

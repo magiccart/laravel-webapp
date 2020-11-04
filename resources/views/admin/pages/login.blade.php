@@ -41,7 +41,7 @@
             </div>
             <div class="buttons-w">
                 <button type="submit" class="btn btn-primary">Log in</button>
-                <a href="contact"> <button  class="btn btn-primary">Contact</button></a>
+                <a href="{{asset('register')}}"> <div  class="btn btn-primary">Contact</div></a>
                 <a href="{{route('forgot')}}">Forgot Password</a>
             </div>
         </form>
